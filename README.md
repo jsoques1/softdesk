@@ -34,7 +34,7 @@ Se référer aux spécifications données sur la page https://openclassrooms.com
 
     python manage.py runserver
 
-- accéder à l'application LitReview servie via le WEB à l'URL :
+- accéder à l'application SoftDesk serveur via le WEB à l'URL :
 
     http://127.0.0.1:8000/
 
