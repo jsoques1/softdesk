@@ -141,7 +141,7 @@ REST_FRAMEWORK = {
 
 # set the lifespan of the JWT tokens
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
 }
 
 # To ensure HTTPS is used

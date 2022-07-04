@@ -85,6 +85,18 @@ class ContributorsViewSet(ModelViewSet):
         #     return Response('Contributors list failed', status=status.HTTP_400_BAD_REQUEST)
         # return super().get_queryset()
 
+    def retrieve(self, request, *args, **kwargs):
+        contributor = get_object_or_404(self.get_queryset())
+        serializer = ContributorsSerializer(contributor)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        contributor = get_object_or_404(self.get_queryset())
+        self.check_object_permissions(self.request, contributor)
+        self.perform_destroy(contributor)
+        message = "Contributor deleted"
+        return Response({"message": message}, status=status.HTTP_200_OK)
+
 
 class IssuesViewSet(ModelViewSet):
     queryset = Issues.objects.all()
