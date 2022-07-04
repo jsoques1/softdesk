@@ -86,7 +86,16 @@ class ContributorsViewSet(ModelViewSet):
         # return super().get_queryset()
 
     def retrieve(self, request, *args, **kwargs):
-        contributor = get_object_or_404(self.get_queryset())
+        print(f'get_queryset:request.user={self.request.user}')
+        project_id = self.kwargs['projects_pk']
+        print(f'self.kwargs={self.kwargs}')
+        contributor_id = self.kwargs['pk']
+        contributors = Contributors.objects.filter(project=project_id, user=contributor_id)
+        if not contributors:
+            return Response('No contributor found', status=status.HTTP_204_NO_CONTENT)
+        print(f'contributors={contributors[0]}')
+
+        contributor = contributors[0]
         serializer = ContributorsSerializer(contributor)
         return Response(serializer.data)
 
