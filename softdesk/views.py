@@ -98,10 +98,6 @@ class ProjectsViewSet(ModelViewSet):
 
         print(f'destroy:project_id={project_id}')
 
-        # instance = self.get_object()
-        # you custom logic #
-        # return super(ProjectsViewSet, self).destroy(request, pk, *args, **kwargs)
-
         project = self.get_object()
         project.delete()
         return Response({'message': 'Project deleted'}, status=status.HTTP_200_OK)
@@ -117,23 +113,21 @@ class ContributorsViewSet(ModelViewSet):
         project_id = self.kwargs['projects_pk']
         print(f'project_id={project_id}')
         print(f'self.kwargs={self.kwargs}')
+
+        if not Projects.objects.filter(id=project_id).exists():
+            raise ValidationError(f'Project {project_id} does not exist')
+
         contributors = Contributors.objects.filter(project=project_id)
         print(f'contributors={contributors}')
+
         if not contributors:
             raise ValidationError('No contributor found')
         return contributors
-        # serializer = ContributorsSerializer(data=contributors, many=True)
-        # if serializer.is_valid(raise_exception=True):
-        #     return Response(serializer.data, status=status.HTTP_200_OK)
-        # else:
-        #     return Response('Contributors list failed', status=status.HTTP_400_BAD_REQUEST)
-        # return super().get_queryset()
 
     def perform_create(self, serializer, *args, **kwargs):
-
         print(f'perform_create:type(serializer)={type(serializer)}')
         print(f'perform_create:request={serializer}')
-        # print(f'perform_create:request.user.id={request.user.id}')
+
         print(f'perform_create:type(self.request)={type(self.request)}')
         print(f'perform_create:self.request={self.request}')
         print(f'perform_create:self.request.user={self.request.user}')
@@ -143,15 +137,18 @@ class ContributorsViewSet(ModelViewSet):
         project_id = self.kwargs.get('projects_pk')
         print(f'project_id={project_id}')
         print(f'type(project_id)={type(project_id)}')
+        if not Projects.objects.filter(id=project_id).exists():
+            raise ValidationError(f'Project {project_id} does not exist')
+
         author = Contributors.objects.filter(project=project_id, user=self.request.user, role='A')
         if not author:
             print('not author')
-            raise ValidationError('Requesting user is not the project author')
+            raise ValidationError(f'Requesting user {self.request.user.username} is not the project author')
         print(f"type(request.data['project'])={type(serializer.data['project'])}")
 
         if int(project_id) != int(serializer.data['project']):
             print('not project')
-            raise ValidationError('project_id in URL should equal to the form parameter')
+            raise ValidationError(f'project_id in URL {project_id} should equal to the form parameter')
 
         if serializer.data['permission'] != 'CR':
             print('not CR')
@@ -176,10 +173,13 @@ class ContributorsViewSet(ModelViewSet):
         print(f'retrieve:request.user={self.request.user}')
         project_id = self.kwargs['projects_pk']
         print(f'self.kwargs={self.kwargs}')
+        if not Projects.objects.filter(id=project_id).exists():
+            raise ValidationError(f'Project {project_id} does not exist')
+
         contributor_id = self.kwargs['pk']
-        contributors = Contributors.objects.filter(project=project_id, user=contributor_id)
+        contributors = Contributors.objects.filter(project=project_id, id=contributor_id)
         if not contributors:
-            raise ValidationError('No contributor found')
+            raise ValidationError(f'Contributor {contributor_id} for project {project_id} does not exist')
         print(f'contributors={contributors[0]}')
 
         contributor = contributors[0]
@@ -190,16 +190,30 @@ class ContributorsViewSet(ModelViewSet):
         print(f'destroy:self.kwargs={self.kwargs}')
         print(f'destroy:request.user={self.request.user}')
         project_id = self.kwargs['projects_pk']
+
+        if not Projects.objects.filter(id=project_id).exists():
+            raise ValidationError(f'Project {project_id} does not exist')
+
         contributor_id = self.kwargs['pk']
+
+        if not Contributors.objects.filter(id=contributor_id).exists():
+            raise ValidationError(f'Contributor {contributor_id} for project {project_id} does not exist')
+
         authors = Contributors.objects.filter(project=project_id, user=self.request.user, role='A')
         if not authors:
             print(f'authors={authors}')
-            raise ValidationError('Requesting user should be the project author')
+            raise ValidationError(f'Requesting user {self.request.user.username} is not the project author')
 
-        if contributor_id == authors[0].user:
-            raise ValidationError('Project author can not be deleted')
+        print(f'type(authors[0].id)={type(authors[0].id)}')
+        print(f'authors[0].id={authors[0].id}')
+        print(f'contributor_id={contributor_id}')
 
-        contributor = Contributors.objects.get(user=contributor_id)
+        if int(contributor_id) == int(authors[0].id):
+            print(f'contributor_id={contributor_id}')
+            print(f'authors[0].user={authors[0].user}')
+            raise ValidationError(f'Author {contributor_id} for project {project_id} can not be deleted')
+
+        contributor = self.get_object()
         contributor.delete()
         return Response({'message': 'Contributor deleted'}, status=status.HTTP_200_OK)
 
