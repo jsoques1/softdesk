@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 
-
+from django.utils import timezone
 from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -120,8 +120,6 @@ class ContributorsViewSet(ModelViewSet):
         contributors = Contributors.objects.filter(project=project_id)
         print(f'contributors={contributors}')
 
-        if not contributors:
-            raise ValidationError('No contributor found')
         return contributors
 
     def perform_create(self, serializer, *args, **kwargs):
@@ -225,32 +223,71 @@ class IssuesViewSet(ModelViewSet):
 
     def get_queryset(self):
         print(f'self.kwargs={self.kwargs}')
-        project_id = self.kwargs.get('project_pk')
-        issue_id = self.kwargs.get('pk')
-        if issue_id and project_id:
-            queryset = Issues.objects.filter(project=project_id, id=issue_id)
-        elif project_id:
-            queryset = Issues.objects.filter(project=project_id)
-        return queryset
-    
-    def perform_create(self, serializer, *args, **kwargs):
-        # body of target data to be created
-        issue_project_id = self.request.data['project']
-        assignee_id = self.request.data['assignee_user']
-        # current project in the url
-        project_id = self.kwargs.get('project_pk')
-        # the logged user needs to be member of the project
+        project_id = self.kwargs.get('projects_pk')
 
-        if project_id != issue_project_id:
-            return Response('project_id is different in the URL and in the form', status=status.HTTP_400_BAD_REQUEST)
+        if not Projects.objects.filter(id=project_id).exists():
+            raise ValidationError(f'Project {project_id} does not exist')
+
+        queryset = Issues.objects.filter(project=project_id)
+        return queryset
+
+    def perform_create(self, serializer, *args, **kwargs):
+        print(f'self.kwargs={self.kwargs}')
+        project_id = self.kwargs.get('projects_pk')
+
+        print(f'perform_create:type(serializer)={type(serializer)}')
+        print(f'perform_create:serializer={serializer}')
+
+        print(f'perform_create:type(self.request)={type(self.request)}')
+        print(f'perform_create:self.request={self.request}')
+        print(f'perform_create:self.request.user={self.request.user}')
+
+        print(f'perform_create:self.request.data={self.request.data}')
+        if not Projects.objects.filter(id=project_id).exists():
+            raise ValidationError(f'Project {project_id} does not exist')
+
+        issue_project_id = self.request.data['project']
+        # assignee_id = self.request.data['assignee_user']
+        print(f'issue_project_id={issue_project_id}')
+        print(f'type(issue_project_id)={type(issue_project_id)}')
+        #
+        # print(f'assignee_id={assignee_id}')
+        # print(f'type(assignee_id)={type(assignee_id)}')
+
+        if int(project_id) != int(issue_project_id):
+            raise ValidationError(f'project_id {project_id} is different in the URL and in the form')
 
         if not Contributors.objects.filter(project_id=project_id, user_id=self.request.user).exists():
-            return Response('Requesting user is not a contributor of the project', status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError(f'Requesting user {self.request.user.username} is not a contributor of the project')
 
-        if not Contributors.objects.filter(project_id=project_id, user_id=assignee_id).exists():
-            return Response('Assignee is not a contributor of the project', status=status.HTTP_400_BAD_REQUEST)
+        issue_data = self.request.data
+        print(f'perform_create:project_data={issue_data}')
+        author_user = User.objects.get(id=issue_data['author_user'])
+        print(f'perform_create:author_user={author_user}')
+        if self.request.user != author_user:
+            raise ValidationError('Requesting user should equal to author_user')
 
-        super().perform_create(serializer, *args, **kwargs)
+        author_user_id = User.objects.get(id=issue_data['author_user'])
+        print(f'perform_create:author_user_id.id={author_user_id.id}')
+        print(f'perform_create:author_user_id={author_user_id}')
+
+        contributor_id = issue_data['assignee_user']
+        if not Contributors.objects.filter(project_id=project_id, id=contributor_id).exists():
+            raise ValidationError(f'Assignee_user {contributor_id} is not a contributor of the project')
+
+        assignee_user_id = Contributors.objects.get(id=contributor_id)
+        print(f'perform_create:assignee_user_id.id={assignee_user_id.id}')
+        print(f'perform_create:assignee_user_id={assignee_user_id}')
+
+        serializer = ProjectsSerializer(data=issue_data)
+        if serializer.is_valid(raise_exception=True):
+            issue = Issues.objects.create(title=issue_data['title'], desc=issue_data['desc'], tag=issue_data['tag'],
+                                          project_id=project_id, priority=issue_data['priority'],
+                                          status=issue_data['status'], author_user_id=author_user_id.id,
+                                          assignee_user_id=assignee_user_id.id,
+                                          created_time=timezone.now())
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
         
 
 class CommentsViewSet(ModelViewSet):
