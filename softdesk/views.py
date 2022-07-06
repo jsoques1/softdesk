@@ -78,25 +78,33 @@ class ProjectsViewSet(ModelViewSet):
         if int(self.request.user.id) != int(author_user.id):
             raise ValidationError('Requesting user should equal to author_user')
 
-        serializer = ProjectsSerializer(data=project_data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        # serializer = ProjectsSerializer(data=project_data)
+        # if serializer.is_valid(raise_exception=True):
+        #     serializer.save()
+        #     return Response(serializer.data, status=status.HTTP_200_OK)
+            super().perform_update(serializer, *args, **kwargs)
+
+        instance = self.get_object()  # instance before update
+        updated_instance = serializer.save()
 
     def destroy(self, request, *args, **kwargs):
-        print(f'get_queryset:request.user={self.request.user}')
-        project_id = self.kwargs['projects_pk']
-        print(f'self.kwargs={self.kwargs}')
-        contributor_id = self.kwargs['pk']
+        print(f'destroy:request.user={self.request.user}')
+        print(f'destroy:self.kwargs={self.kwargs}')
+        project_id = self.kwargs['pk']
+        print(f'destroy:self.kwargs={self.kwargs}')
         authors = Contributors.objects.filter(project=project_id, user=self.request.user, role='A')
         if not authors:
             raise ValidationError('Requesting user should be the author')
 
-        print(f'contributor={contributor_id}')
-        contributor = Contributors.objects.get(contributor_id)
-        self.perform_destroy(contributor)
-        message = 'Contributor deleted'
-        return Response({'message': message}, status=status.HTTP_200_OK)
+        print(f'destroy:project_id={project_id}')
+
+        # instance = self.get_object()
+        # you custom logic #
+        # return super(ProjectsViewSet, self).destroy(request, pk, *args, **kwargs)
+
+        project = self.get_object()
+        project.delete()
+        return Response({'message': 'Project deleted'}, status=status.HTTP_200_OK)
 
 
 class ContributorsViewSet(ModelViewSet):
