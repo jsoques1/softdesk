@@ -19,17 +19,16 @@ class ContributorsPermissions(permissions.BasePermission):
         print(f'permissions.SAFE_METHODS={permissions.SAFE_METHODS}')
 
         project = get_object_or_404(Projects, id=view.kwargs['projects_pk'])
+        print(f'request.user={request.user}')
+        print(f'project.author_user={project.author_user}')
         if request.method in permissions.SAFE_METHODS:
             print('request.method in permissions.SAFE_METHODS')
             retval = project in Projects.objects.filter(contributors__user=request.user)
             print(f'retval={retval}')
             return project in Projects.objects.filter(contributors__user=request.user)
         print('NOT request.method in permissions.SAFE_METHODS')
-        return request.user == project.author_user
 
-    def has_object_permission(self, request, view, obj):
-        print(f'view.kwargs={view.kwargs}')
-        return True
+        return request.user == project.author_user
 
 
 class IssuesPermissions(permissions.BasePermission):

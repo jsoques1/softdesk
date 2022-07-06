@@ -16,7 +16,7 @@ class Projects(models.Model):
     author_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'[Projects:{self.title}, {self.description}, {self.type}, {self.author_user}]'
+        return f'[Projects:{self.id} {self.title}, {self.description}, {self.type}, {self.author_user}]'
 
 
 class Contributors(models.Model):
@@ -34,21 +34,11 @@ class Contributors(models.Model):
 
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project = models.ForeignKey(to=Projects, on_delete=models.CASCADE)
-    permission = models.CharField(
-        max_length=4,
-        choices=CONTRIBUTOR_PERMISSIONS,
-        default='CRUD',
-    )
-    role = models.CharField(max_length=11, choices=CONTRIBUTOR_ROLES, default='C')
-
-    class Meta:
-        unique_together = (
-            "user",
-            "project",
-        )
+    permission = models.CharField(max_length=4, choices=CONTRIBUTOR_PERMISSIONS)
+    role = models.CharField(max_length=11, choices=CONTRIBUTOR_ROLES)
 
     def __str__(self):
-        return f'[Projects:{self.user}, {self.project}, {self.permission}, {self.role}]'
+        return f'[Contributors:{self.id} {self.user}, {self.project}, {self.permission}, {self.role}]'
 
 
 class Issues(models.Model):
@@ -80,7 +70,7 @@ class Issues(models.Model):
     created_time = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        first_attributes = f'[Issues:{self.title}, {self.desc}, {self.tag}, {self.project}, {self.priority},'
+        first_attributes = f'[Issues:{self.id} {self.title}, {self.desc}, {self.tag}, {self.project}, {self.priority},'
         mid_attributes = f' {self.priority}, {self.status}, {self.author_user}, {self.assignee_user}'
         last_attributes = f' {self.created_time}]'
         return first_attributes + mid_attributes + last_attributes
@@ -93,5 +83,5 @@ class Comments(models.Model):
     created_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'[Projects:{self.description}, {self.author_user}, {self.issue}, {self.created_time}]'
+        return f'[Comments:{self.id} {self.description}, {self.author_user}, {self.issue}, {self.created_time}]'
 
