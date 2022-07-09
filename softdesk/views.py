@@ -84,6 +84,10 @@ class ProjectsViewSet(ModelViewSet):
         #     return Response(serializer.data, status=status.HTTP_200_OK)
         # super().perform_update(serializer, *args, **kwargs)
 
+        comment = self.get_object()
+        if int(self.request.user.id) != int(comment.author_user_id):
+            raise ValidationError('Requesting user {self.request.user.username} is not the project author')
+
         instance = self.get_object()  # instance before update
         updated_instance = serializer.save()
 
@@ -94,7 +98,7 @@ class ProjectsViewSet(ModelViewSet):
         print(f'destroy:self.kwargs={self.kwargs}')
         authors = Contributors.objects.filter(project=project_id, user=self.request.user, role='A')
         if not authors:
-            raise ValidationError('Requesting user should be the author')
+            raise ValidationError('Requesting user should be the project author')
 
         print(f'destroy:project_id={project_id}')
 
