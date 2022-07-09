@@ -82,7 +82,7 @@ class ProjectsViewSet(ModelViewSet):
         # if serializer.is_valid(raise_exception=True):
         #     serializer.save()
         #     return Response(serializer.data, status=status.HTTP_200_OK)
-            super().perform_update(serializer, *args, **kwargs)
+        # super().perform_update(serializer, *args, **kwargs)
 
         instance = self.get_object()  # instance before update
         updated_instance = serializer.save()
@@ -318,7 +318,7 @@ class IssuesViewSet(ModelViewSet):
         if not Contributors.objects.filter(project_id=project_id, id=contributor_id).exists():
             raise ValidationError(f'Assignee_user {contributor_id} is not a contributor of the project')
 
-        super().perform_update(serializer, *args, **kwargs)
+        # super().perform_update(serializer, *args, **kwargs)
 
         instance = self.get_object()  # instance before update
         updated_instance = serializer.save()
@@ -410,15 +410,9 @@ class CommentsViewSet(ModelViewSet):
         if int(issue_id) != int(comment_data['issue']):
             raise ValidationError(f'issue_id {issue_id} is different in the URL and in the form')
 
-        if not Contributors.objects.filter(project_id=project_id, user_id=self.request.user).exists():
-            raise ValidationError(f'Requesting user {self.request.user.username} is not a contributor of the project')
-
         author_user_id = User.objects.get(id=comment_data['author_user'])
         print(f'perform_create:author_user_id.id={author_user_id.id}')
         print(f'perform_create:author_user_id={author_user_id}')
-
-        if int(self.request.user.id) != int(author_user_id.id):
-            raise ValidationError('Requesting user should equal to author_user')
 
         serializer = CommentsSerializer(data=comment_data)
         if serializer.is_valid(raise_exception=True):
@@ -426,3 +420,65 @@ class CommentsViewSet(ModelViewSet):
                                             author_user_id=comment_data['author_user'],
                                             issue_id=comment_data['issue'])
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def perform_update(self, serializer, *args, **kwargs):
+        print(f'perform_update:type(request)={type(serializer)}')
+        print(f'perform_update:request={serializer}')
+        print(f'perform_update:type(self.request)={type(self.request)}')
+        print(f'perform_update:self.request={self.request}')
+        print(f'perform_update:type(self.request.user)={type(self.request.user)}')
+        print(f'perform_update:self.request.user={self.request.user}')
+
+        print(f'perform_create:self.request.data={self.request.data}')
+        project_id = self.kwargs.get('projects_pk')
+        if not Projects.objects.filter(id=project_id).exists():
+            raise ValidationError(f'Project {project_id} does not exist')
+
+        issue_id = self.kwargs.get("issues_pk")
+        if not Issues.objects.filter(id=issue_id).exists():
+            raise ValidationError(f'Issue_id {issue_id} does not exist')
+
+        comment_data = self.request.data
+        print(f"issue_data[issue_id]={comment_data['issue']}")
+
+        if int(issue_id) != int(comment_data['issue']):
+            raise ValidationError(f'issue_id {issue_id} is different in the URL and in the form')
+
+        author_user_id = User.objects.get(id=comment_data['author_user'])
+        print(f'perform_create:author_user_id.id={author_user_id.id}')
+        print(f'perform_create:author_user_id={author_user_id}')
+
+        comment = self.get_object()
+        if int(self.request.user.id) != int(comment.author_user_id):
+            raise ValidationError('Requesting user {self.request.user.username} is not the comment author')
+
+        if int(comment.author_user_id) != int(author_user_id.id):
+            raise ValidationError('Can not change the comment author')
+
+        # super().perform_update(serializer, *args, **kwargs)
+
+        instance = self.get_object()  # instance before update
+        updated_instance = serializer.save()
+
+    def destroy(self, request, *args, **kwargs):
+        print(f'destroy:type(request)={type(request)}')
+        print(f'destroy:request={request}')
+        print(f'destroy:type(self.request)={type(self.request)}')
+        print(f'destroy:self.request={self.request}')
+        print(f'destroy:type(self.request.user)={type(self.request.user)}')
+        print(f'destroy:self.request.user={self.request.user}')
+
+        project_id = self.kwargs.get('projects_pk')
+        if not Projects.objects.filter(id=project_id).exists():
+            raise ValidationError(f'Project {project_id} does not exist')
+
+        issue_id = self.kwargs.get("issues_pk")
+        if not Issues.objects.filter(id=issue_id).exists():
+            raise ValidationError(f'Issue_id {issue_id} does not exist')
+
+        comment = self.get_object()
+        if int(self.request.user.id) != int(comment.author_user_id):
+            raise ValidationError('Requesting user {self.request.user.username} is not the comment author')
+
+        comment.delete()
+        return Response({'message': 'Issue deleted'}, status=status.HTTP_200_OK)
