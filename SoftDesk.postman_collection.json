@@ -1,0 +1,972 @@
+{
+	"info": {
+		"_postman_id": "5d46fc08-a223-4c9f-b8c5-fcd6ba503721",
+		"name": "SoftDesk",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20394225"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MTA3MjE0LCJpYXQiOjE2NTcwMjA4MTQsImp0aSI6Ijc1OTA3MGM2ZTg0MTQ4Yzk4MTcxNWIxNmIwMDZmYzE4IiwidXNlcl9pZCI6MX0.lGhZcZkXBVlbB7h_zO-6gd8bPgDILDN5AveUsZIcAsM",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "username",
+						"value": "student",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "password",
+						"value": "p@sswod2022",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "intern",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "p@ssword2022",
+							"type": "text"
+						},
+						{
+							"key": "refresh",
+							"value": "true",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/login/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "tester",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "tester",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "softdesk",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "tester@softdesk.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "p@ssword2022",
+							"type": "text"
+						},
+						{
+							"key": "confirm_password",
+							"value": "p@ssword2022",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/signup/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"signup",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Projects list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3NDI3Mjc1LCJpYXQiOjE2NTczNDA4NzUsImp0aSI6IjI3ZDM1MTcxZDFkNzQxMDI5Y2Q5YzE4ODZkM2I5NGQ5IiwidXNlcl9pZCI6M30.E5h8wu9SdmvTpdajpuzNoFeTeV6LAlFB1vu_xQbgR3U",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Projects create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MjE4OTQyLCJpYXQiOjE2NTcxMzI1NDIsImp0aSI6IjE1OWQ0MzZjMDdjZDQ0MzU4YjYzYmI1NGFkMmQ0M2NkIiwidXNlcl9pZCI6M30.DuxbRUNzQRoA28BsbZytMpIx8L-AOZFyHUqr5M0v_Ms",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Postman",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Test de l'outil",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "B",
+							"description": "Back-End",
+							"type": "text"
+						},
+						{
+							"key": "author_user",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Projects retrieve",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3NDYwOTg2LCJpYXQiOjE2NTczNzQ1ODYsImp0aSI6IjdlZDVjZDFlM2M5OTQ1N2I4NzliMGIzNDhhZjdkMThiIiwidXNlcl9pZCI6M30.NmRfBc24vB3qiwBwYW8yffbSj-zcLFo0dZCOFKSQ-pA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Projects modify",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MjE0NzA1LCJpYXQiOjE2NTcxMjgzMDUsImp0aSI6IjVmMzk2MjgyODZiOTQxNDM4Y2FiNDBiMDU0ZmJkMWVlIiwidXNlcl9pZCI6M30.6RlmUyxBkIj0nntkzvtnA7KQP1_uHm8mKhTtbnbkKP0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Postman9",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Test de l'outil9",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "A",
+							"description": "Back-End",
+							"type": "text"
+						},
+						{
+							"key": "author_user",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/31/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"31",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Projects delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MjE1NTM1LCJpYXQiOjE2NTcxMjkxMzUsImp0aSI6IjlhYmYwNjk5ZmNiMzQ1NTQ5NTVmNTQ0YmQwYmFhMDY2IiwidXNlcl9pZCI6M30.qSxHM4wRK_h8uqhrDF4qJBqSwq0aWeoKCOqPpFVKJMk",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/30/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"30",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contributors list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MjE4OTQyLCJpYXQiOjE2NTcxMzI1NDIsImp0aSI6IjE1OWQ0MzZjMDdjZDQ0MzU4YjYzYmI1NGFkMmQ0M2NkIiwidXNlcl9pZCI6M30.DuxbRUNzQRoA28BsbZytMpIx8L-AOZFyHUqr5M0v_Ms",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "permission",
+							"value": "Postman",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "role",
+							"value": "Test de l'outil",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "user",
+							"value": "B",
+							"description": "Back-End",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "project",
+							"value": "3",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contributors add",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MjE1NTM1LCJpYXQiOjE2NTcxMjkxMzUsImp0aSI6IjlhYmYwNjk5ZmNiMzQ1NTQ5NTVmNTQ0YmQwYmFhMDY2IiwidXNlcl9pZCI6M30.qSxHM4wRK_h8uqhrDF4qJBqSwq0aWeoKCOqPpFVKJMk",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "permission",
+							"value": "CR",
+							"description": "C,R,CR,CRUD",
+							"type": "text"
+						},
+						{
+							"key": "project",
+							"value": "41",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "C",
+							"description": "A,C",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contributors delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MjE1NTM1LCJpYXQiOjE2NTcxMjkxMzUsImp0aSI6IjlhYmYwNjk5ZmNiMzQ1NTQ5NTVmNTQ0YmQwYmFhMDY2IiwidXNlcl9pZCI6M30.qSxHM4wRK_h8uqhrDF4qJBqSwq0aWeoKCOqPpFVKJMk",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/users/33/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"users",
+						"33",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Issues list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MzcyOTc3LCJpYXQiOjE2NTcyODY1NzcsImp0aSI6ImJmODExODAxZTY0YjQxOWM5YzQwY2NiMGRiZGZlOWZmIiwidXNlcl9pZCI6M30.6dcRH_zPZ5ip4rYcI0USeXpjoQDMpqa0Mf3Z7mGHDaM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "permission",
+							"value": "Postman",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "role",
+							"value": "Test de l'outil",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "user",
+							"value": "B",
+							"description": "Back-End",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "project",
+							"value": "3",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/issues/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"issues",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Issues create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MjE4OTQyLCJpYXQiOjE2NTcxMzI1NDIsImp0aSI6IjE1OWQ0MzZjMDdjZDQ0MzU4YjYzYmI1NGFkMmQ0M2NkIiwidXNlcl9pZCI6M30.DuxbRUNzQRoA28BsbZytMpIx8L-AOZFyHUqr5M0v_Ms",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Issue#1",
+							"type": "text"
+						},
+						{
+							"key": "desc",
+							"value": "Panne générale",
+							"type": "text"
+						},
+						{
+							"key": "tag",
+							"value": "B",
+							"description": "Bug/Maintenance/Ugrade",
+							"type": "text"
+						},
+						{
+							"key": "project",
+							"value": "41",
+							"type": "text"
+						},
+						{
+							"key": "priority",
+							"value": "H",
+							"description": "Low/Mediium/High",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "T",
+							"description": "TBD/Assigned/Closed",
+							"type": "text"
+						},
+						{
+							"key": "author_user",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "assignee_user",
+							"value": "33",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "No desc",
+							"description": "Required by django???",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "B",
+							"description": "Required by django???",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "created_time",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/issues/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"issues",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Issues modify",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MzcyOTc3LCJpYXQiOjE2NTcyODY1NzcsImp0aSI6ImJmODExODAxZTY0YjQxOWM5YzQwY2NiMGRiZGZlOWZmIiwidXNlcl9pZCI6M30.6dcRH_zPZ5ip4rYcI0USeXpjoQDMpqa0Mf3Z7mGHDaM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Issue#1",
+							"type": "text"
+						},
+						{
+							"key": "desc",
+							"value": "Panne générale",
+							"type": "text"
+						},
+						{
+							"key": "tag",
+							"value": "B",
+							"description": "Bug/Maintenance/Ugrade",
+							"type": "text"
+						},
+						{
+							"key": "project",
+							"value": "41",
+							"type": "text"
+						},
+						{
+							"key": "priority",
+							"value": "H",
+							"description": "Low/Mediium/High",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "A",
+							"description": "TBD/Assigned/Closed",
+							"type": "text"
+						},
+						{
+							"key": "author_user",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "assignee_user",
+							"value": "33",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "No desc",
+							"description": "Required by django???",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "B",
+							"description": "Required by django???",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "created_time",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/issues/5/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"issues",
+						"5",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Issues delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3MzcyOTc3LCJpYXQiOjE2NTcyODY1NzcsImp0aSI6ImJmODExODAxZTY0YjQxOWM5YzQwY2NiMGRiZGZlOWZmIiwidXNlcl9pZCI6M30.6dcRH_zPZ5ip4rYcI0USeXpjoQDMpqa0Mf3Z7mGHDaM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/issues/5/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"issues",
+						"5",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comments list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3NDI3Mjc1LCJpYXQiOjE2NTczNDA4NzUsImp0aSI6IjI3ZDM1MTcxZDFkNzQxMDI5Y2Q5YzE4ODZkM2I5NGQ5IiwidXNlcl9pZCI6M30.E5h8wu9SdmvTpdajpuzNoFeTeV6LAlFB1vu_xQbgR3U",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"issues",
+						"4",
+						"comments",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comments create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3NDI3Mjc1LCJpYXQiOjE2NTczNDA4NzUsImp0aSI6IjI3ZDM1MTcxZDFkNzQxMDI5Y2Q5YzE4ODZkM2I5NGQ5IiwidXNlcl9pZCI6M30.E5h8wu9SdmvTpdajpuzNoFeTeV6LAlFB1vu_xQbgR3U",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "description",
+							"value": "comment#1",
+							"type": "text"
+						},
+						{
+							"key": "author_user",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "issue",
+							"value": "4",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"issues",
+						"4",
+						"comments",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comments modify",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3NDI3Mjc1LCJpYXQiOjE2NTczNDA4NzUsImp0aSI6IjI3ZDM1MTcxZDFkNzQxMDI5Y2Q5YzE4ODZkM2I5NGQ5IiwidXNlcl9pZCI6M30.E5h8wu9SdmvTpdajpuzNoFeTeV6LAlFB1vu_xQbgR3U",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "description",
+							"value": "comment#1 après mise à jour",
+							"type": "text"
+						},
+						{
+							"key": "author_user",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "issue",
+							"value": "4",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/2/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"issues",
+						"4",
+						"comments",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comments delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3NDI3Mjc1LCJpYXQiOjE2NTczNDA4NzUsImp0aSI6IjI3ZDM1MTcxZDFkNzQxMDI5Y2Q5YzE4ODZkM2I5NGQ5IiwidXNlcl9pZCI6M30.E5h8wu9SdmvTpdajpuzNoFeTeV6LAlFB1vu_xQbgR3U",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/1/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"issues",
+						"4",
+						"comments",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comments retrieve",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3NDI3Mjc1LCJpYXQiOjE2NTczNDA4NzUsImp0aSI6IjI3ZDM1MTcxZDFkNzQxMDI5Y2Q5YzE4ODZkM2I5NGQ5IiwidXNlcl9pZCI6M30.E5h8wu9SdmvTpdajpuzNoFeTeV6LAlFB1vu_xQbgR3U",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/2/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"sd",
+						"projects",
+						"41",
+						"issues",
+						"4",
+						"comments",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5MTk0MzcxLCJpYXQiOjE2NTY2MDIzNzEsImp0aSI6IjI2OTQzN2Y3NDk3NzQyNzE4ZjYxMTU1YTQwMGY1MmQ0IiwidXNlcl9pZCI6Mn0.Dci3je2bUioMURKCm5gk4JRdFFUmhxDW6uWR3wbGhps"
+		}
+	]
+}
