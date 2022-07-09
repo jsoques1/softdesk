@@ -41,7 +41,17 @@ Se référer aux spécifications données sur la page https://openclassrooms.com
 
 Comme requis un exemple de travail du fichier DB db.sqlite3 est livré et permet de démarrer sans effectuer la migration des modèles. 
 Si vous souhaitez débuter avec une base de donnée vierge, il vous suffit de supprimer le fichier db.sqlite3 ; 
-l'application en créera un nouveau à la première connexion.
+l'application en créera un nouveau à la migration des modèles.
 
-TBC
-...
+## Liste des utilisateurs 
+
+| id   | username      | password       |
+|------|---------------|----------------|
+| 1    | admin         | p@ssword2022   |
+| 2    | student       | p@ssword2022   |
+| 3    | intern        | p@ssword2022   |
+| 4    | tester        | p@ssword2022   |
+
+## API documentation
+
+Se référer à la page https://documenter.getpostman.com/view/20394225/UzJPMFZV
