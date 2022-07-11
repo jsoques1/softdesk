@@ -314,4 +314,4 @@ class CommentsViewSet(ModelViewSet):
             raise ValidationError('Requesting user {self.request.user.username} is not the comment author')
 
         comment.delete()
-        return Response({'message': 'Issue deleted'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Comment deleted'}, status=status.HTTP_200_OK)
