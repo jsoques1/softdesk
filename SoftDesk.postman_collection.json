@@ -1,7 +1,8 @@
 {
 	"info": {
-		"_postman_id": "5d46fc08-a223-4c9f-b8c5-fcd6ba503721",
+		"_postman_id": "188e4dce-7e2b-4c5f-a63f-56ee830a858b",
 		"name": "SoftDesk",
+		"description": "Softdesk est :\n\n1.  *Une application de suivi des problèmes pour les trois plateformes (site web, applications Android et iOS).*\n2.  *L'application permettra essentiellement aux utilisateurs de créer divers projets, d'ajouter des utilisateurs à des projets spécifiques, de créer des problèmes au sein des projets et d'attribuer des libellés à ces problèmes en fonction de leurs priorités, de balises, etc.*\n3.  *Les trois applications* ***exploiteront les points de terminaison d'API qui serviront les données.***\n4.  Principales fonctionnalités de l'application :  \n    *1.*  \n    Authentification des ***utilisateurs*** *(inscription/connexion)*  \n    *Utiliser l'authentification JWT pour authentifier les utilisateurs.*  \n    *2.*  \n    *Concernant les objets de type projet, les utilisateurs doivent avoir accès aux actions basiques de type CRUD (de l'anglais* ***C***reate,* ***R***ead,* ***U***pdate,* ***D***elete, signifiant “créer, lire, actualiser, supprimer”) sur des ***projets***. *Chaque projet doit avoir un* ***titre***, une ***description***, un ***type*** *(back-end, front-end, iOS ou Android), et un* ***author_user_id***.  \n    *Un projet peut être défini comme une entité ayant plusieurs collaborateurs (utilisateurs), et chaque projet peut contenir plusieurs problèmes.*  \n    *3.*  \n    *Chaque projet peut se voir associer des problèmes qui lui sont liés ; l'utilisateur ne doit pouvoir appliquer le processus* ***CRUD aux problèmes*** *du projet* ***que si*** *il ou elle figure sur la liste des contributeurs.*  \n    *Un projet ne doit être accessible qu'à son responsable et aux contributeurs. Seuls les contributeurs sont autorisés à créer ou à consulter les problèmes d'un projet.*  \n    *4.*  \n    *Chaque problème doit avoir un* ***titre***, une* ***description***, un ***assigné*** *(l’assigné par défaut étant l'auteur lui-même), une* ***priorité*** *(FAIBLE, MOYENNE ou ÉLEVÉE), une* ***balise*** *(BUG, AMÉLIORATION ou TÂCHE), un* ***statut*** *(À faire, En cours ou Terminé), le* ***project_id*** *auquel il est lié et un* ***created_time*** *(horodatage), ainsi que d'autres attributs mentionnés dans le diagramme de classe.*  \n    *Seuls les contributeurs peuvent créer (Create) et lire (Read) les commentaires relatifs à un problème. En outre, ils ne peuvent les actualiser (Update) et les supprimer (Delete) que s'ils en sont les auteurs.*  \n    *5.*  \n    *Les problèmes peuvent faire l'objet de commentaires de la part des contributeurs au projet auquel ces problèmes appartiennent. Chaque commentaire doit être assorti d'une* ***description***, d'un ***author_user_id***, d'un ***issue_id,*** *et d'un* ***comment_id***.  \n    *Un commentaire doit être visible par tous les contributeurs du projet, mais il ne peut être actualisé ou supprimé que par son auteur.*  \n    *6.*  \n    *Il est* ***interdit*** *à tout utilisateur autorisé autre que l'auteur d'émettre des requêtes d'actualisation et de suppression d'un* ***problème/projet/commentaire***.  \n    *Autorisation d'actualisation et de suppression*",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "20394225"
 	},
@@ -62,7 +63,8 @@
 						"login",
 						""
 					]
-				}
+				},
+				"description": "Lorsque l'utilisateur envoie une requête POST, si les données entrées sont valides, l'API renvoie un token d'accès JWT. Ce token permet l'accès à l'ensemble des points de terminaison pour une durée de 24 heures.\n\nCe token doit être utilisé comme Authentification dans le header des requêtes de cet API, sauf indication contraire.\n\n### PERMISSIONS\n\nAucune permission n'est requise pour accéder à ce point de terminaison."
 			},
 			"response": []
 		},
@@ -117,7 +119,8 @@
 						"signup",
 						""
 					]
-				}
+				},
+				"description": "Crée un nouvel utilisateur.\n\n### PERMISSIONS\n\nAucune permission n'est requise pour accéder à ce point de terminaison."
 			},
 			"response": []
 		},
@@ -151,7 +154,8 @@
 						"projects",
 						""
 					]
-				}
+				},
+				"description": "L'API renvoie la liste de tous les projets dont l'utilisateur est l'auteur ou le contributeur.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT."
 			},
 			"response": []
 		},
@@ -204,7 +208,8 @@
 						"projects",
 						""
 					]
-				}
+				},
+				"description": "L'attributaire (*assignee_user*) de ce problème doit être l'auteur de la requête.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié.\n    \n\n```\nType\n('B', 'Back-end'),\n('F', 'Front-end'),\n('I', 'iOS'),\n('A', 'Android')\n```"
 			},
 			"response": []
 		},
@@ -220,7 +225,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -229,10 +234,17 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "L'API renvoie le détail du projet spécifié.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié."
 			},
 			"response": []
 		},
@@ -274,7 +286,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/31/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -283,10 +295,17 @@
 					"path": [
 						"sd",
 						"projects",
-						"31",
+						":project_id",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "Modification des attributs du projet.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur du projet spécifié.\n    \n\n```\nType\n('B', 'Back-end'),\n('F', 'Front-end'),\n('I', 'iOS'),\n('A', 'Android')\n```"
 			},
 			"response": []
 		},
@@ -302,7 +321,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/30/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -311,10 +330,17 @@
 					"path": [
 						"sd",
 						"projects",
-						"30",
+						":project_id",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "Le projet spécifié est supprimé. Les contributeurs, problèmes et commentaires associés à ce projet sont également supprimés.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur du projet spécifié."
 			},
 			"response": []
 		},
@@ -363,7 +389,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/users/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/users/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -372,11 +398,18 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"users",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "L'API renvoie la liste de tous les contributeurs associés au projet spécifié.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié."
 			},
 			"response": []
 		},
@@ -419,7 +452,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/users/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/users/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -428,11 +461,18 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"users",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "Un contributeur associé au projet spécifié est créé dans la base de données.\n\nLe rôle \"C\" est automatiquement attribué à ce contributeur.\n\n```\nPermission\n('C', \"Create\"),\n('R', \"Read\"),\n('CR', \"Create/Read\"),\n('CRUD', \"Create/Read/Update/Delete\"),\n\n```\n\n```\nRole\n('A', 'Author'),\n('C', 'Contributor')\n\n```"
 			},
 			"response": []
 		},
@@ -462,7 +502,8 @@
 						"33",
 						""
 					]
-				}
+				},
+				"description": "le contributeur spécifié est supprimé. Les problèmes et commentaires dont ce contributeur est l'auteur sont également supprimés.\n\nNote : il n'est pas possible de supprimer le contributeur ayant pour rôle \"AUTHOR\""
 			},
 			"response": []
 		},
@@ -511,7 +552,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/issues/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/issues/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -520,11 +561,18 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"issues",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "L'API renvoie la liste de tous les problèmes associés au projet spécifié.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié."
 			},
 			"response": []
 		},
@@ -608,7 +656,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/issues/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/issues/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -617,11 +665,18 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"issues",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "Lorsque l'utilisateur envoie une requête POST, si les données entrées sont valides, un problème associé au projet spécifié est créé dans la base de données.\n\nL'attributaire (*assignee_user*) de ce problème doit faire partie des contributeurs associés à ce projet.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié.\n    \n\n```\nTag\n('B', 'Bug'),\n('M', 'Maintenance'),\n('U', 'Upgrade')\n```\n\n```\nPriority\n('L', 'Low'),\n('M', 'Medium'),\n('H', 'High')\n```\n\n```\nStatus\n('T', 'TBD'),\n('A', 'Assigned'),\n('C', 'Close')\n```"
 			},
 			"response": []
 		},
@@ -681,31 +736,11 @@
 							"key": "assignee_user",
 							"value": "33",
 							"type": "text"
-						},
-						{
-							"key": "description",
-							"value": "No desc",
-							"description": "Required by django???",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "type",
-							"value": "B",
-							"description": "Required by django???",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "created_time",
-							"value": "",
-							"type": "text",
-							"disabled": true
 						}
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/issues/5/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/issues/:issue_id/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -714,12 +749,23 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"issues",
-						"5",
+						":issue_id",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						},
+						{
+							"key": "issue_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "Un ou plusieurs attributs du problème spécifié sont modifiés.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur du problème spécifié.\n    \n\n```\nTag\n('B', 'Bug'),\n('M', 'Maintenance'),\n('U', 'Upgrade')\n```\n\n```\nPriority\n('L', 'Low'),\n('M', 'Medium'),\n('H', 'High')\n```\n\n```\nStatus\n('T', 'TBD'),\n('A', 'Assigned'),\n('C', 'Closed')\n```"
 			},
 			"response": []
 		},
@@ -735,7 +781,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/issues/5/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/issues/:issue_id/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -744,12 +790,23 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"issues",
-						"5",
+						":issue_id",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						},
+						{
+							"key": "issue_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "Le problème spécifié est supprimé. Les commentaires associés à ce problème sont également supprimés.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur du problème spécifié."
 			},
 			"response": []
 		},
@@ -765,7 +822,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/issues/:issue_id/comments/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -774,13 +831,24 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"issues",
-						"4",
+						":issue_id",
 						"comments",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						},
+						{
+							"key": "issue_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "L'API renvoie la liste de tous les commentaires associés au problème spécifié.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié."
 			},
 			"response": []
 		},
@@ -816,7 +884,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/issues/:issue_id/comments/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -825,13 +893,24 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"issues",
-						"4",
+						":issue_id",
 						"comments",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						},
+						{
+							"key": "issue_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "Un commentaire associé au problème spécifié est créé dans la base de données.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié."
 			},
 			"response": []
 		},
@@ -867,7 +946,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/2/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/issues/:issue_id/comments/:comment_id/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -876,14 +955,29 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"issues",
-						"4",
+						":issue_id",
 						"comments",
-						"2",
+						":comment_id",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						},
+						{
+							"key": "issue_id",
+							"value": null
+						},
+						{
+							"key": "comment_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "Un ou plusieurs attributs du commentaire spécifié sont modifiés.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur du commentaire spécifié."
 			},
 			"response": []
 		},
@@ -903,7 +997,7 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/1/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/issues/:issue_id/comments/:comment_id/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -912,14 +1006,29 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"issues",
-						"4",
+						":issue_id",
 						"comments",
-						"1",
+						":comment_id",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						},
+						{
+							"key": "issue_id",
+							"value": null
+						},
+						{
+							"key": "comment_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "Le commentaire spécifié est supprimé.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur du commentaire spécifié."
 			},
 			"response": []
 		},
@@ -942,7 +1051,7 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "http://localhost:8000/sd/projects/41/issues/4/comments/2/",
+					"raw": "http://localhost:8000/sd/projects/:project_id/issues/:issue_id/comments/:comment_id/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -951,14 +1060,29 @@
 					"path": [
 						"sd",
 						"projects",
-						"41",
+						":project_id",
 						"issues",
-						"4",
+						":issue_id",
 						"comments",
-						"2",
+						":comment_id",
 						""
+					],
+					"variable": [
+						{
+							"key": "project_id",
+							"value": null
+						},
+						{
+							"key": "issue_id",
+							"value": null
+						},
+						{
+							"key": "comment_id",
+							"value": null
+						}
 					]
-				}
+				},
+				"description": "L'API renvoie le détail du commentaire spécifié.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié."
 			},
 			"response": []
 		}

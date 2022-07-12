@@ -1,3 +1,8 @@
 from django.contrib import admin
+from softdesk.models import Projects, Issues, Contributors, Comments
 
-# Register your models here.
+admin.site.register(Projects)
+admin.site.register(Issues)
+admin.site.register(Contributors)
+admin.site.register(Comments)
+
