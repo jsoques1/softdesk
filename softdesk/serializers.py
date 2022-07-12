@@ -28,6 +28,3 @@ class ContributorsSerializer(ModelSerializer):
         model = Contributors
         fields = '__all__'
         read_only__fields = ('author', 'issue', 'created_time', 'id')
-
-
-
