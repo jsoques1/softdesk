@@ -16,7 +16,7 @@ class Projects(models.Model):
     author_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'[Projects:{self.id} {self.title}, {self.description}, {self.type}, {self.author_user}]'
+        return f'[Projects:{self.id} {self.title}]'
 
 
 class Contributors(models.Model):
@@ -38,7 +38,7 @@ class Contributors(models.Model):
     role = models.CharField(max_length=11, choices=CONTRIBUTOR_ROLES)
 
     def __str__(self):
-        return f'[Contributors:{self.id} {self.user}, {self.project}, {self.permission}, {self.role}]'
+        return f'[Contributors:{self.id} {self.user}]'
 
 
 class Issues(models.Model):
@@ -70,10 +70,8 @@ class Issues(models.Model):
     created_time = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        first_attributes = f'[Issues:{self.id} {self.title}, {self.desc}, {self.tag}, {self.project}, {self.priority},'
-        mid_attributes = f' {self.priority}, {self.status}, {self.author_user}, {self.assignee_user}'
-        last_attributes = f' {self.created_time}]'
-        return first_attributes + mid_attributes + last_attributes
+        issue_id = f'[Issues:{self.id} {self.title}]'
+        return issue_id
 
 
 class Comments(models.Model):
@@ -83,5 +81,5 @@ class Comments(models.Model):
     created_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'[Comments:{self.id} {self.description}, {self.author_user}, {self.issue}, {self.created_time}]'
+        return f'[Comments:{self.id} {self.issue}]'
 

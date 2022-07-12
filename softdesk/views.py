@@ -85,7 +85,6 @@ class ContributorsViewSet(ModelViewSet):
 
         author = Contributors.objects.filter(project=project_id, user=self.request.user, role='A')
         if not author:
-            print('not author')
             raise ValidationError(f'Requesting user {self.request.user.username} is not the project author')
 
         if int(project_id) != int(serializer.data['project']):
@@ -171,10 +170,8 @@ class IssuesViewSet(ModelViewSet):
 
         issue_data = self.request.data
         author_user = User.objects.get(id=issue_data['author_user'])
-        if self.request.user != author_user:
+        if int(self.request.user.id) != int(author_user.id):
             raise ValidationError('Requesting user should equal to author_user')
-
-        author_user_id = User.objects.get(id=issue_data['author_user'])
 
         contributor_id = issue_data['assignee_user']
         if not Contributors.objects.filter(project_id=project_id, id=contributor_id).exists():
@@ -186,7 +183,7 @@ class IssuesViewSet(ModelViewSet):
         if serializer.is_valid(raise_exception=True):
             issue = Issues.objects.create(title=issue_data['title'], desc=issue_data['desc'], tag=issue_data['tag'],
                                           project_id=project_id, priority=issue_data['priority'],
-                                          status=issue_data['status'], author_user_id=author_user_id.id,
+                                          status=issue_data['status'], author_user_id=author_user.id,
                                           assignee_user_id=assignee_user_id.id,
                                           created_time=timezone.now())
 
@@ -292,7 +289,7 @@ class CommentsViewSet(ModelViewSet):
 
         comment = self.get_object()
         if int(self.request.user.id) != int(comment.author_user_id):
-            raise ValidationError('Requesting user {self.request.user.username} is not the comment author')
+            raise ValidationError(f'Requesting user {self.request.user.username} is not the comment author')
 
         if int(comment.author_user_id) != int(author_user_id.id):
             raise ValidationError('Can not change the comment author')
@@ -311,7 +308,7 @@ class CommentsViewSet(ModelViewSet):
 
         comment = self.get_object()
         if int(self.request.user.id) != int(comment.author_user_id):
-            raise ValidationError('Requesting user {self.request.user.username} is not the comment author')
+            raise ValidationError(f'Requesting user {self.request.user.username} is not the comment author')
 
         comment.delete()
         return Response({'message': 'Comment deleted'}, status=status.HTTP_200_OK)
