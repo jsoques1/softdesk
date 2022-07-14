@@ -36,7 +36,7 @@ Se référer aux spécifications données sur la page https://openclassrooms.com
 
 - accéder à l'application SoftDesk serveur via le WEB à l'URL :
 
-    http://127.0.0.1:8000/
+    http://127.0.0.1:8000/login/
 
 
 Comme requis un exemple de travail du fichier DB db.sqlite3 est livré et permet de démarrer sans effectuer la migration des modèles. 
