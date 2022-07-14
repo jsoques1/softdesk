@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "188e4dce-7e2b-4c5f-a63f-56ee830a858b",
+		"_postman_id": "2eb620ab-bd21-4c12-beed-7318c51ed09f",
 		"name": "SoftDesk",
 		"description": "Softdesk est :\n\n1.  *Une application de suivi des problèmes pour les trois plateformes (site web, applications Android et iOS).*\n2.  *L'application permettra essentiellement aux utilisateurs de créer divers projets, d'ajouter des utilisateurs à des projets spécifiques, de créer des problèmes au sein des projets et d'attribuer des libellés à ces problèmes en fonction de leurs priorités, de balises, etc.*\n3.  *Les trois applications* ***exploiteront les points de terminaison d'API qui serviront les données.***\n4.  Principales fonctionnalités de l'application :  \n    *1.*  \n    Authentification des ***utilisateurs*** *(inscription/connexion)*  \n    *Utiliser l'authentification JWT pour authentifier les utilisateurs.*  \n    *2.*  \n    *Concernant les objets de type projet, les utilisateurs doivent avoir accès aux actions basiques de type CRUD (de l'anglais* ***C***reate,* ***R***ead,* ***U***pdate,* ***D***elete, signifiant “créer, lire, actualiser, supprimer”) sur des ***projets***. *Chaque projet doit avoir un* ***titre***, une ***description***, un ***type*** *(back-end, front-end, iOS ou Android), et un* ***author_user_id***.  \n    *Un projet peut être défini comme une entité ayant plusieurs collaborateurs (utilisateurs), et chaque projet peut contenir plusieurs problèmes.*  \n    *3.*  \n    *Chaque projet peut se voir associer des problèmes qui lui sont liés ; l'utilisateur ne doit pouvoir appliquer le processus* ***CRUD aux problèmes*** *du projet* ***que si*** *il ou elle figure sur la liste des contributeurs.*  \n    *Un projet ne doit être accessible qu'à son responsable et aux contributeurs. Seuls les contributeurs sont autorisés à créer ou à consulter les problèmes d'un projet.*  \n    *4.*  \n    *Chaque problème doit avoir un* ***titre***, une* ***description***, un ***assigné*** *(l’assigné par défaut étant l'auteur lui-même), une* ***priorité*** *(FAIBLE, MOYENNE ou ÉLEVÉE), une* ***balise*** *(BUG, AMÉLIORATION ou TÂCHE), un* ***statut*** *(À faire, En cours ou Terminé), le* ***project_id*** *auquel il est lié et un* ***created_time*** *(horodatage), ainsi que d'autres attributs mentionnés dans le diagramme de classe.*  \n    *Seuls les contributeurs peuvent créer (Create) et lire (Read) les commentaires relatifs à un problème. En outre, ils ne peuvent les actualiser (Update) et les supprimer (Delete) que s'ils en sont les auteurs.*  \n    *5.*  \n    *Les problèmes peuvent faire l'objet de commentaires de la part des contributeurs au projet auquel ces problèmes appartiennent. Chaque commentaire doit être assorti d'une* ***description***, d'un ***author_user_id***, d'un ***issue_id,*** *et d'un* ***comment_id***.  \n    *Un commentaire doit être visible par tous les contributeurs du projet, mais il ne peut être actualisé ou supprimé que par son auteur.*  \n    *6.*  \n    *Il est* ***interdit*** *à tout utilisateur autorisé autre que l'auteur d'émettre des requêtes d'actualisation et de suppression d'un* ***problème/projet/commentaire***.  \n    *Autorisation d'actualisation et de suppression*",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -209,7 +209,7 @@
 						""
 					]
 				},
-				"description": "L'attributaire (*assignee_user*) de ce problème doit être l'auteur de la requête.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié.\n    \n\n```\nType\n('B', 'Back-end'),\n('F', 'Front-end'),\n('I', 'iOS'),\n('A', 'Android')\n```"
+				"description": "L'author_user devra être le créateur de la requête.\n\nUn Contributor est automatiquement créé pour le créateur du projet de type Author avec les permissions CRUD.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n    \n\n```\nType\n('B', 'Back-end'),\n('F', 'Front-end'),\n('I', 'iOS'),\n('A', 'Android')\n\n```"
 			},
 			"response": []
 		},
@@ -472,7 +472,7 @@
 						}
 					]
 				},
-				"description": "Un contributeur associé au projet spécifié est créé dans la base de données.\n\nLe rôle \"C\" est automatiquement attribué à ce contributeur.\n\n```\nPermission\n('C', \"Create\"),\n('R', \"Read\"),\n('CR', \"Create/Read\"),\n('CRUD', \"Create/Read/Update/Delete\"),\n\n```\n\n```\nRole\n('A', 'Author'),\n('C', 'Contributor')\n\n```"
+				"description": "Un contributeur associé au projet spécifié est créé dans la base de données.\n\nLe rôle \"C\" est automatiquement attribué à ce contributeur.\n\nLa permission est automatiquement mis à \"CR\"\n\n```\nPermission\n('C', \"Create\"),\n('R', \"Read\"),\n('CR', \"Create/Read\"),\n('CRUD', \"Create/Read/Update/Delete\"),\n\n```\n\n```\nRole\n('A', 'Author'),\n('C', 'Contributor')\n\n```"
 			},
 			"response": []
 		},
@@ -676,7 +676,7 @@
 						}
 					]
 				},
-				"description": "Lorsque l'utilisateur envoie une requête POST, si les données entrées sont valides, un problème associé au projet spécifié est créé dans la base de données.\n\nL'attributaire (*assignee_user*) de ce problème doit faire partie des contributeurs associés à ce projet.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié.\n    \n\n```\nTag\n('B', 'Bug'),\n('M', 'Maintenance'),\n('U', 'Upgrade')\n```\n\n```\nPriority\n('L', 'Low'),\n('M', 'Medium'),\n('H', 'High')\n```\n\n```\nStatus\n('T', 'TBD'),\n('A', 'Assigned'),\n('C', 'Close')\n```"
+				"description": "L'author_user devra être le créateur de la requête.\n\nL'attributaire (*assignee_user*) de ce problème doit faire partie des contributeurs associés à ce projet.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié.\n    \n\n```\nTag\n('B', 'Bug'),\n('M', 'Maintenance'),\n('U', 'Upgrade')\n\n```\n\n```\nPriority\n('L', 'Low'),\n('M', 'Medium'),\n('H', 'High')\n\n```\n\n```\nStatus\n('T', 'TBD'),\n('A', 'Assigned'),\n('C', 'Close')\n\n```"
 			},
 			"response": []
 		},
@@ -910,7 +910,7 @@
 						}
 					]
 				},
-				"description": "Un commentaire associé au problème spécifié est créé dans la base de données.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié."
+				"description": "L'author_user devra être le créateur du commentaire.\n\n### PERMISSIONS\n\n*   L'utilisateur doit être authentifié avec son JWT.\n*   L'utilisateur doit être l'auteur ou un contributeur du projet spécifié."
 			},
 			"response": []
 		},

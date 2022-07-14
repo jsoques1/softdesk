@@ -38,7 +38,7 @@ class Contributors(models.Model):
     role = models.CharField(max_length=11, choices=CONTRIBUTOR_ROLES)
 
     def __str__(self):
-        return f'[Contributors:{self.id} {self.user}]'
+        return f'[Contributors:{self.id} {self.user}g]'
 
 
 class Issues(models.Model):
@@ -68,7 +68,7 @@ class Issues(models.Model):
     author_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     assignee_user = models.ForeignKey(to=Contributors, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         issue_id = f'[Issues:{self.id} {self.title}]'
         return issue_id
@@ -82,4 +82,3 @@ class Comments(models.Model):
 
     def __str__(self):
         return f'[Comments:{self.id} {self.issue}]'
-

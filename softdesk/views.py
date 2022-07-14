@@ -6,13 +6,11 @@ from rest_framework.exceptions import ValidationError
 
 from django.utils import timezone
 from rest_framework.viewsets import ModelViewSet
-from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated, AllowAny
+
+from rest_framework.permissions import IsAuthenticated
 from .models import Projects, Issues, Contributors, Comments
 
 from .serializers import ProjectsSerializer, IssuesSerializer, CommentsSerializer, ContributorsSerializer
-
-User = get_user_model()
 
 
 class ProjectsViewSet(ModelViewSet):
