@@ -52,6 +52,13 @@ l'application en créera un nouveau à la migration des modèles.
 | 3    | intern        | p@ssword2022   |
 | 4    | tester        | p@ssword2022   |
 
+L'utilisateur admin sera créé de préférence dans l'environnement virtuel avec la commande shell createsuperuser.
+
+- python manage.py createsuperuser
+
+Les autres utilisateurs seront créés avec l'endpoint signup.
+
+
 ## API documentation
 
-Se référer à la page https://documenter.getpostman.com/view/20394225/UzJPMFZV
+Se référer à la page https://documenter.getpostman.com/view/20394225/UzQuPRTc
