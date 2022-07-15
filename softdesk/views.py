@@ -276,9 +276,11 @@ class CommentsViewSet(ModelViewSet):
         if int(issue_id) != int(comment_data['issue']):
             raise ValidationError(f'issue_id {issue_id} is different in the URL and in the form')
 
-        author_user_id = User.objects.get(id=comment_data['author_user'])
+        author_user = User.objects.get(id=comment_data['author_user'])
+        if int(self.request.user.id) != int(author_user.id):
+            raise ValidationError('Requesting user should equal to author_user')
 
-        if not Contributors.objects.filter(project_id=project_id, id=self.request.user.id).exists():
+        if not Contributors.objects.filter(project_id=project_id, user_id=self.request.user.id).exists():
             raise ValidationError(f'Requesting user {self.request.user.id} is not a contributor of the project')
 
         serializer = CommentsSerializer(data=comment_data)
@@ -336,8 +338,8 @@ class CommentsViewSet(ModelViewSet):
             raise ValidationError(f'Project {project_id} does not exist')
 
         issue_id = self.kwargs['issues_pk']
-        contributors = Issues.objects.filter(project=project_id, id=issue_id)
-        if not contributors:
+        issues = Issues.objects.filter(project=project_id, id=issue_id)
+        if not issues:
             raise ValidationError(f'Issue {issue_id} for project {project_id} does not exist')
 
         comments_id = self.kwargs['pk']
