@@ -93,7 +93,13 @@ class ContributorsViewSet(ModelViewSet):
 
         if serializer.data['role'] != 'C':
             raise ValidationError('role should be C')
+
         user = User.objects.get(id=serializer.data['user'])
+
+        check_user = Contributors.objects.filter(project=project_id, user=user)
+        if check_user:
+            raise ValidationError(f'Contributor {self.request.user.username} already exists')
+
         contributor = Contributors.objects.create(user=user, project_id=project_id, role='C',
                                                   permission='CR')
 
@@ -175,10 +181,10 @@ class IssuesViewSet(ModelViewSet):
             raise ValidationError('Requesting user should equal to author_user')
 
         contributor_id = issue_data['assignee_user']
-        if not Contributors.objects.filter(project_id=project_id, id=contributor_id).exists():
+        if not Contributors.objects.filter(project_id=project_id, user_id=contributor_id).exists():
             raise ValidationError(f'Assignee_user {contributor_id} is not a contributor of the project')
 
-        if not Contributors.objects.filter(project_id=project_id, id=author_user.id).exists():
+        if not Contributors.objects.filter(project_id=project_id, user_id=author_user.id).exists():
             raise ValidationError(f'Requesting user {author_user.id} is not a contributor of the project')
 
         assignee_user_id = Contributors.objects.get(id=contributor_id)
@@ -206,7 +212,7 @@ class IssuesViewSet(ModelViewSet):
         if int(self.request.user.id) != int(author_user.id):
             raise ValidationError('Requesting user should equal to author_user')
 
-        if not Contributors.objects.filter(project_id=project_id, id=self.request.user.id).exists():
+        if not Contributors.objects.filter(project_id=project_id, user_id=self.request.user.id).exists():
             raise ValidationError(f'Assignee_user {self.request.user.id} is not a contributor of the project')
 
         contributor_id = issue_data['assignee_user']
@@ -249,7 +255,7 @@ class CommentsViewSet(ModelViewSet):
         if not Issues.objects.filter(id=issue_id).exists():
             raise ValidationError(f'Issue_id {issue_id} does not exist')
 
-        if not Contributors.objects.filter(project_id=project_id, id=self.request.user.id).exists():
+        if not Contributors.objects.filter(project_id=project_id, user_id=self.request.user.id).exists():
             raise ValidationError(f'Requesting user {self.request.user.id} is not a contributor of the project')
 
         queryset = Comments.objects.filter(issue=issue_id)
@@ -323,3 +329,22 @@ class CommentsViewSet(ModelViewSet):
 
         comment.delete()
         return Response({'message': 'Comment deleted'}, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, *args, **kwargs):
+        project_id = self.kwargs['projects_pk']
+        if not Projects.objects.filter(id=project_id).exists():
+            raise ValidationError(f'Project {project_id} does not exist')
+
+        issue_id = self.kwargs['issues_pk']
+        contributors = Issues.objects.filter(project=project_id, id=issue_id)
+        if not contributors:
+            raise ValidationError(f'Issue {issue_id} for project {project_id} does not exist')
+
+        comments_id = self.kwargs['pk']
+        comments = Comments.objects.filter(issue=issue_id, id=comments_id)
+        if not comments:
+            raise ValidationError(f'Comment {comments_id} for Issue {issue_id} of project {project_id} does not exist')
+
+        comment = comments[0]
+        serializer = CommentsSerializer(comment)
+        return Response(serializer.data)

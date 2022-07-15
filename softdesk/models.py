@@ -38,7 +38,7 @@ class Contributors(models.Model):
     role = models.CharField(max_length=11, choices=CONTRIBUTOR_ROLES)
 
     def __str__(self):
-        return f'[Contributors:{self.id} {self.user}g]'
+        return f'[Contributors:{self.id} {self.user}]'
 
 
 class Issues(models.Model):
